@@ -1,0 +1,2 @@
+https://people.ece.cornell.edu/land/courses/ece4760/PIC32/PLIB_examples/plib_examples/
+https://eewiki.net/display/microcontroller/Getting+Started+with+the+PIC32+and+MPLAB+X#GettingStartedwiththePIC32andMPLABX-UARTConfiguration
