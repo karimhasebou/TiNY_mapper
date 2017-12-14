@@ -28,7 +28,7 @@ void WriteStringNull(char *string) {
       string++;
       delay(5000);
       while (!UARTTransmissionHasCompleted(UART1));
-    } while (*string != '\0');
+  } while (*string != '\0');
 
 }
 
@@ -36,7 +36,6 @@ void WriteStringNull(char *string) {
 void sendMessage(char* msg){
     WriteString("AT+CIPSEND=12\r\n");
     delay(30000);
-//    WriteString("AT+CIPSEND\r\n");
     WriteStringNull(msg);
 }
 
@@ -61,17 +60,17 @@ void initUart(){
   INTSetVectorSubPriority(INT_VECTOR_UART(UART1), INT_SUB_PRIORITY_LEVEL_0);
   
   // Connect to AP
-//  WriteString(AT_CMD);
-//  delay(100e3);
-//  WriteString(DISCONNECT_CMD);
-//  delay(100e3);
-//  WriteString(CONNECT_CMD);
-//  delay(5e6);
-//  WriteString(START_CMD);
-//  delay(100e3);
-//  WriteString(AT_CMD);
-//  delay(100e3);
-  sendMessage("Hello world");
+  WriteString(AT_CMD);
+  delay(100e3);
+  WriteString(DISCONNECT_CMD);
+  delay(100e3);
+  WriteString(CONNECT_CMD);
+  delay(5e6);
+  WriteString(START_CMD);
+  delay(100e3);
+  WriteString(AT_CMD);
+  delay(100e3);
+  sendMessage("Hello World");
 }
 
 // UART 2 interrupt handler

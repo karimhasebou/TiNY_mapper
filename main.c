@@ -81,12 +81,12 @@ void forwardX(int x){
     OC1RS = PR2 * FWD_MULT * 3.8;
     OC2RS = PR2 * BK;
     mv = FWD;
-	switch(heading){
-		N: posx++; break;
-		E: posy++; break;
-		S: posx--; break;
-		W: posy--; break;
-	}
+    switch(heading){
+	case N: posx++; break;
+	case E: posy++; break;
+	case S: posx--; break;
+	case W: posy--; break;
+    }
     delay(10e3*x);
 }
 
@@ -130,27 +130,33 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2ISR(void){
     mT1ClearIntFlag();
 }
 
-void notifyClientOfDistance(int distance){
-    char msg[11] = "           ";
+void notifyClientOfDistance(ul distance){
+    char msg[12];
     
+    int i;
+    for(i = 0; i < 12;++i)
+	    msg[i] = ' ';
+    msg[11] = '\0';
+    
+    int posyLocal = posy, posxLocal = posx,distLocal = distance;
     int idx = 0;
     
     do{
-        msg[idx++] = ((int)"0") + posy % 10;
-        distance /= 10;
-    }while(posy > 0);
+        msg[idx++] = ((int)'0') + posyLocal % 10;
+        posyLocal /= 10;
+    }while(posyLocal > 0);
     idx += 1;
     
     do{
-        msg[idx++] = ((int)"0") + posx % 10;
-        distance /= 10;
-    }while(posx > 0);
+        msg[idx++] = ((int)'0') + posxLocal % 10;
+        posxLocal /= 10;
+    }while(posxLocal > 0);
     
     idx += 1;
     do{
-        msg[idx++] = ((int)"0") + distance % 10;
-        distance /= 10;
-    }while(distance > 0);
+        msg[idx++] = ((int)'0') + distLocal % 10;
+        distLocal /= 10;
+    }while(distLocal > 0);
     
     
     sendMessage(msg);
@@ -173,10 +179,10 @@ void turn90(enum move dir){
 	delay(t);
 	stop();
 	switch(heading){
-		N: heading = dir == LEFT ? W:E; break;
-		E: heading = dir == LEFT ? N:S; break;
-		S: heading = dir == LEFT ? E:W; break;
-		W: heading = dir == LEFT ? S:N; break;
+		case N: heading = dir == LEFT ? W:E; break;
+		case E: heading = dir == LEFT ? N:S; break;
+		case S: heading = dir == LEFT ? E:W; break;
+		case W: heading = dir == LEFT ? S:N; break;
 	}
 }
 
@@ -228,28 +234,28 @@ int main(){
     initDA();
     initUart();
     while(1){
-//        dist = getDistance();
-//        if(dist < 50)
-//            turn90(LEFT);
-//        else{
-//             forwardX(100);
-//             stop();
-//             
-//	     dist = getDistance();
-//             notifyClientOfDistance(dist);
-//	     
-//             turnHead(LEFT);
-//             dist = getDistance();
-//             notifyClientOfDistance(dist);
-//             
-//             turnHead(RIGHT);
-//	     
-//             turnHead(RIGHT);
-//             dist = getDistance();
-//             notifyClientOfDistance(dist);
-//	     
-//             turnHead(LEFT);
-//        }
+        dist = getDistance();
+        if(dist < 50)
+            turn90(LEFT);
+        else{
+             forwardX(100);
+             stop();
+             
+	     dist = getDistance();
+             notifyClientOfDistance(dist);
+	     
+             turnHead(LEFT);
+             dist = getDistance();
+             notifyClientOfDistance(dist);
+             
+             turnHead(RIGHT);
+	     
+             turnHead(RIGHT);
+             dist = getDistance();
+             notifyClientOfDistance(dist);
+	     
+             turnHead(LEFT);
+        }
     }
     return 0;
 }

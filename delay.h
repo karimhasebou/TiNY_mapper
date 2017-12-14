@@ -13,7 +13,7 @@ extern "C" {
 #endif
    
     typedef unsigned long ul;
-    void delay(int);
+    void delay(unsigned int);
     void initDelay();
     volatile ul t_count = 0;
     

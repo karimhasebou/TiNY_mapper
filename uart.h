@@ -38,7 +38,7 @@ extern "C" {
         "AT\r\n",
         "AT+CWMODE=1\r\n",
         "AT+CWQAP\r\n",
-        "AT+CWJAP=\"AO\",\"12345678\"\r\n",
+        "AT+CWJAP=\"bkhmsi\",\"12345678\"\r\n",
         "AT+CIPSTART=\"TCP\",\"192.168.43.198\",60000\r\n"
     };
     int count = 0;
