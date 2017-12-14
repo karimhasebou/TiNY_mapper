@@ -67,7 +67,7 @@ void initUart(){
   WriteString(CONNECT_CMD);
   delay(5e6);
   WriteString(START_CMD);
-  delay(100e3);
+  delay(1000e3);
   WriteString(AT_CMD);
   delay(100e3);
   sendMessage("Hello World");

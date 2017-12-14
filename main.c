@@ -66,6 +66,7 @@ enum move{FWD,BACK,RIGHT,LEFT};
 enum move mv = FWD;
 enum orientation heading = N;
 int posx = 0, posy = 0;
+int szx = 100, szy = 100;
 
 
 
@@ -82,10 +83,18 @@ void forwardX(int x){
     OC2RS = PR2 * BK;
     mv = FWD;
     switch(heading){
-	case N: posx++; break;
-	case E: posy++; break;
-	case S: posx--; break;
-	case W: posy--; break;
+	case N: 
+		posx++; 
+		break;
+	case E: 
+		posy++; 
+		break;
+	case S: 
+		posx--; 
+		break;
+	case W: 
+		posy--; 
+		break;
     }
     delay(10e3*x);
 }
@@ -137,6 +146,21 @@ void notifyClientOfDistance(ul distance){
     for(i = 0; i < 12;++i)
 	    msg[i] = ' ';
     msg[11] = '\0';
+    
+	switch(heading){
+	case N:
+		msg[10] = 'N';
+		break;
+	case S:
+		msg[10] = 'S';
+		break;
+	case W:
+		msg[10] = 'W';
+		break;
+	case E:
+		msg[10] = 'E';
+		break;
+    }
     
     int posyLocal = posy, posxLocal = posx,distLocal = distance;
     int idx = 0;
@@ -224,6 +248,25 @@ ul getDistance(){
     return distance;
 }
 
+int withinBounds(){
+	int val = 1;
+	switch(heading){
+	     case N: 
+		     val = (posx + 1 < szx) ? 1:0; 
+		     break;
+	     case E: 
+		     val = (posy + 1 < szy) ? 1:0; 
+		     break;
+	     case S: 
+		     val = (posx - 1 >= 0) ? 1:0; 
+		     break;
+	     case W: 
+		     val = (posy - 1 >= 0) ? 1:0; 
+		     break;
+	 }
+	return val;
+}
+
 int main(){
     
     ul dist;
@@ -235,10 +278,10 @@ int main(){
     initUart();
     while(1){
         dist = getDistance();
-        if(dist < 50)
+        if(dist < 30 || !withinBounds())
             turn90(LEFT);
         else{
-             forwardX(100);
+             forwardX(50);
              stop();
              
 	     dist = getDistance();
